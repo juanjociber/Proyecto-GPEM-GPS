@@ -19,33 +19,35 @@
 </body>
 
     <script>
-          function obtenerDireccion(latitud, longitud) {
+        async function obtenerDireccion(latitud, longitud) {
             var url = `https://nominatim.openstreetmap.org/reverse?lat=${latitud}&lon=${longitud}&format=json`;
 
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    var address = data.display_name;
-                    document.getElementById("direccion").textContent = address;
-                })
-                .catch(error => {
-                    console.error('Error al obtener la dirección:', error);
-                });
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                const address = data.display_name;
+                document.getElementById("direccion").textContent = address;
+            } catch (error) {
+                console.error('Error al obtener la dirección:', error);
+            }
         }
 
-        function obtenerGeolocalizacion() {
+        async function obtenerGeolocalizacion() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    var latitud = position.coords.latitude;
-                    var longitud = position.coords.longitude;
+                try {
+                    const position = await new Promise((resolve, reject) => {
+                        navigator.geolocation.getCurrentPosition(resolve, reject);
+                    });
+                    const latitud = position.coords.latitude;
+                    const longitud = position.coords.longitude;
 
                     document.getElementById("latitud").textContent = latitud;
                     document.getElementById("longitud").textContent = longitud;
 
-                    obtenerDireccion(latitud, longitud);
-                }, function(error) {
+                    await obtenerDireccion(latitud, longitud);
+                } catch (error) {
                     // Manejar errores
-                    switch(error.code) {
+                    switch (error.code) {
                         case error.PERMISSION_DENIED:
                             alert("El usuario ha denegado la solicitud de geolocalización.");
                             break;
@@ -59,7 +61,7 @@
                             alert("Se ha producido un error desconocido.");
                             break;
                     }
-                });
+                }
             } else {
                 alert("Geolocalización no soportada por este navegador.");
             }
