@@ -62,5 +62,5 @@ async function obtenerGeolocalizacion() {
     }
 }
 
-setInterval(obtenerGeolocalizacion, 5000);
+setInterval(obtenerGeolocalizacion,60000);
 
