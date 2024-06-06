@@ -1,4 +1,4 @@
-async function obtenerDireccion(latitud, longitud) {
+Oeasync function obtenerDireccion(latitud, longitud) {
     const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitud}&lon=${longitud}&format=json`;
 
     try {
@@ -61,6 +61,5 @@ async function obtenerGeolocalizacion() {
         alert("Geolocalización no soportada por este navegador.");
     }
 }
-
-setInterval(obtenerGeolocalizacion,60000);
+obtenerGeolocalizacion();
 
