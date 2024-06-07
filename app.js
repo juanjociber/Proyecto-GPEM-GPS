@@ -1,4 +1,4 @@
-Oeasync function obtenerDireccion(latitud, longitud) {
+async function obtenerDireccion(latitud, longitud) {
     const url = `https://nominatim.openstreetmap.org/reverse?lat=${latitud}&lon=${longitud}&format=json`;
 
     try {
